@@ -1,0 +1,752 @@
+<!DOCTYPE html>
+<html lang="en" id="htmlTag">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta name="color-scheme" content="light only">
+    <meta name="supported-color-schemes" content="light">
+    
+    <title>YD - Youth Meeting</title>
+    <link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@600;700;800;900&family=Montserrat:wght@900&family=Cairo:wght@600;700;800;900&display=swap" rel="stylesheet">
+    <style>
+        :root {
+            color-scheme: light only;
+        }
+
+        html, body {
+            forced-color-adjust: none;
+            -webkit-forced-color-adjust: none;
+        }
+
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+            font-family: 'Plus Jakarta Sans', 'Cairo', sans-serif;
+        }
+
+        body {
+            background: linear-gradient(135deg, #f8d7fc 0%, #d8f1ff 50%, #f7f3d3 100%);
+            background-attachment: fixed;
+            color: #121212;
+            min-height: 100vh;
+            padding-top: 185px;
+            position: relative;
+            overflow-x: hidden;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+            align-items: center;
+        }
+
+        /* Support Arabic RTL direction */
+        html[dir="rtl"] .top-navbar { flex-direction: row-reverse; }
+        html[dir="rtl"] .side-drawer {
+            left: auto;
+            right: -300px;
+            border-right: none;
+            border-left: 3.5px solid #121212;
+            transition: right 0.3s ease;
+        }
+        html[dir="rtl"] .side-drawer.open { left: auto; right: 0; }
+        html[dir="rtl"] .drawer-close { text-align: left; }
+        html[dir="rtl"] .card-number { left: auto; right: 28px; }
+        html[dir="rtl"] .card-icon { right: auto; left: 28px; }
+        html[dir="rtl"] .modal-close-btn { left: auto; right: 18px; }
+        html[dir="rtl"] .modal-header-icon { right: auto; left: 25px; }
+
+        /* Top Navigation Bar */
+        .top-navbar {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 185px;
+            background-color: #005bc5;
+            display: flex;
+            align-items: center;
+            justify-content: space-between;
+            padding: 15px 40px;
+            z-index: 90;
+            box-shadow: 0 8px 25px rgba(0,0,0,0.18);
+            border-bottom: 4px solid #121212;
+        }
+
+        .hamburger-btn {
+            cursor: pointer;
+            display: flex;
+            flex-direction: column;
+            gap: 6px;
+            background: none;
+            border: none;
+        }
+
+        .hamburger-btn span {
+            display: block;
+            width: 32px;
+            height: 4px;
+            background-color: #ffffff;
+            border-radius: 4px;
+        }
+
+        .header-center-box {
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            text-align: center;
+        }
+
+        .welcome-pill {
+            background: #ff3377;
+            color: #fff;
+            font-size: 0.75rem;
+            font-weight: 800;
+            padding: 4px 18px;
+            border-radius: 20px;
+            letter-spacing: 2.5px;
+            text-transform: uppercase;
+            border: 2px solid #121212;
+            box-shadow: 2px 2px 0px #121212;
+            margin-bottom: 4px;
+        }
+
+        .nav-logo-yd {
+            font-size: 5.5rem;
+            font-weight: 900;
+            color: #121212;
+            line-height: 0.85;
+            letter-spacing: -2px;
+            text-shadow: 5px 5px 0px #ff7ebb;
+            font-family: 'Montserrat', sans-serif;
+            display: inline-block;
+            animation: popOutLogo 1s cubic-bezier(0.175, 0.885, 0.32, 1.275) forwards;
+        }
+
+        .header-subtitle {
+            font-size: 0.9rem;
+            color: #ffffff;
+            font-weight: 700;
+            margin-top: 6px;
+            opacity: 0.95;
+            letter-spacing: 0.3px;
+        }
+
+        @keyframes popOutLogo {
+            0% { transform: scale(0.2); opacity: 0; }
+            70% { transform: scale(1.15); opacity: 1; }
+            100% { transform: scale(1); opacity: 1; }
+        }
+
+        /* Side Navigation Drawer */
+        .side-drawer {
+            position: fixed;
+            top: 0;
+            left: -300px;
+            width: 280px;
+            height: 100%;
+            background: #ffffff;
+            border-right: 3.5px solid #121212;
+            z-index: 200;
+            transition: left 0.3s ease;
+            padding: 30px 20px;
+            box-shadow: 5px 0 20px rgba(0,0,0,0.15);
+        }
+
+        .side-drawer.open { left: 0; }
+
+        .drawer-close {
+            text-align: right;
+            font-size: 1.5rem;
+            font-weight: 900;
+            cursor: pointer;
+            margin-bottom: 30px;
+        }
+
+        .drawer-menu {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .drawer-link {
+            padding: 14px 18px;
+            background: #f0f3ff;
+            border: 2.5px solid #121212;
+            border-radius: 14px;
+            font-weight: 800;
+            text-decoration: none;
+            color: #121212;
+            box-shadow: 4px 4px 0px #121212;
+            display: block;
+            text-align: center;
+            cursor: pointer;
+        }
+
+        /* Floating Circles Background */
+        .circle {
+            position: fixed;
+            border-radius: 50%;
+            z-index: -1;
+            animation: floatSlow 6s infinite alternate ease-in-out;
+            filter: blur(1px);
+        }
+        .c1 { width: 160px; height: 160px; background: #ff7ebb; top: 20%; left: 2%; opacity: 0.65; }
+        .c2 { width: 110px; height: 110px; background: #7ee8ff; bottom: 10%; left: 3%; opacity: 0.75; animation-delay: -1.5s; }
+        .c3 { width: 180px; height: 180px; background: #ffde7e; top: 22%; right: 2%; opacity: 0.8; animation-delay: -3s; }
+        .c4 { width: 130px; height: 130px; background: #c2b5ff; bottom: 8%; right: 3%; opacity: 0.75; animation-delay: -4.5s; }
+        .c5 { width: 140px; height: 140px; background: #ff9e7e; top: 58%; left: 47%; opacity: 0.55; animation-delay: -2s; }
+        
+        /* كرات إضافية لحيوية أكتَر */
+        .c6 { width: 90px; height: 90px; background: #85ffc7; top: 28%; left: 22%; opacity: 0.6; animation-delay: -3.5s; }
+        .c7 { width: 120px; height: 120px; background: #ff92d0; top: 25%; right: 22%; opacity: 0.65; animation-delay: -1s; }
+        .c8 { width: 100px; height: 100px; background: #ffd166; bottom: 25%; left: 15%; opacity: 0.7; animation-delay: -5s; }
+        .c9 { width: 150px; height: 150px; background: #a8dadc; bottom: 20%; right: 18%; opacity: 0.6; animation-delay: -2.5s; }
+        .c10 { width: 85px; height: 85px; background: #e0aaff; top: 75%; left: 38%; opacity: 0.65; animation-delay: -4s; }
+
+        @keyframes floatSlow {
+            0% { transform: translateY(0px) translateX(0px) scale(1); }
+            50% { transform: translateY(-30px) translateX(12px) scale(1.1); }
+            100% { transform: translateY(-55px) translateX(-10px) scale(1.05); }
+        }
+
+        /* Responsive Layout - 2 Columns (Top 2, Bottom 2) */
+        .wrapper {
+            width: 100%;
+            max-width: 1300px;
+            margin: 0 auto;
+            padding: 40px 40px;
+        }
+
+        .grid-container {
+            display: grid;
+            grid-template-columns: repeat(2, 1fr);
+            gap: 35px;
+            width: 100%;
+        }
+
+        .card {
+            border: 4px solid #121212;
+            border-radius: 28px;
+            padding: 45px 35px;
+            position: relative;
+            text-align: center;
+            box-shadow: 8px 8px 0px #121212;
+            cursor: pointer;
+            transition: all 0.2s ease;
+            display: flex;
+            flex-direction: column;
+            justify-content: space-between;
+            min-height: 260px;
+            width: 100%;
+        }
+
+        .card:hover { transform: translate(-4px, -4px); box-shadow: 12px 12px 0px #121212; }
+        .card-1 { background-color: #ffd2e7; }
+        .card-2 { background-color: #aaeaff; }
+        .card-3 { background-color: #ffe68c; }
+        .card-4 { background-color: #c9baff; }
+
+        .card-number { position: absolute; top: 22px; left: 28px; font-size: 3rem; font-weight: 900; opacity: 0.25; }
+        .card-icon { position: absolute; top: 25px; right: 28px; font-size: 2.2rem; }
+        .card-title { font-size: 2.1rem; font-weight: 800; margin-top: 35px; margin-bottom: 10px; }
+        .card-desc { font-size: 1.05rem; color: #333; font-weight: 600; margin-bottom: 25px; }
+        .card-action { font-size: 0.95rem; font-weight: 900; letter-spacing: 1px; }
+
+        /* Modal Styling */
+        .modal-overlay {
+            position: fixed;
+            top: 0;
+            left: 0;
+            width: 100%;
+            height: 100%;
+            background: rgba(0, 0, 0, 0.4);
+            display: none;
+            justify-content: center;
+            align-items: center;
+            z-index: 300;
+            padding: 20px;
+        }
+
+        .modal-box {
+            background: #ffffff;
+            border: 4px solid #121212;
+            border-radius: 32px;
+            padding: 35px 25px 30px;
+            max-width: 500px;
+            width: 100%;
+            max-height: 85vh;
+            overflow-y: auto;
+            box-shadow: 10px 10px 0px #121212;
+            text-align: center;
+            position: relative;
+        }
+
+        .modal-close-btn {
+            position: absolute;
+            top: 18px;
+            left: 18px;
+            width: 36px;
+            height: 36px;
+            background: #ff65a3;
+            border: 2.5px solid #121212;
+            border-radius: 50%;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            font-weight: 900;
+            cursor: pointer;
+            box-shadow: 2px 2px 0px #121212;
+        }
+
+        .modal-header-icon {
+            position: absolute;
+            top: 20px;
+            right: 25px;
+            font-size: 2rem;
+        }
+
+        .modal-title {
+            font-size: 1.8rem;
+            font-weight: 900;
+            margin-top: 20px;
+            margin-bottom: 6px;
+            color: #121212;
+        }
+
+        .modal-subtitle {
+            font-size: 0.9rem;
+            color: #555;
+            font-weight: 600;
+            margin-bottom: 20px;
+        }
+
+        .pill-item {
+            background: #f4f1ff;
+            border: 2.5px solid #121212;
+            border-radius: 20px;
+            padding: 16px;
+            margin-bottom: 12px;
+            font-size: 1.1rem;
+            font-weight: 800;
+            color: #121212;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 8px;
+            box-shadow: 3px 3px 0px rgba(0,0,0,0.1);
+        }
+
+        .social-link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #ffd2e7;
+            border: 3.5px solid #121212;
+            border-radius: 20px;
+            padding: 16px 20px;
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: #121212;
+            text-decoration: none;
+            box-shadow: 4px 4px 0px #121212;
+            transition: transform 0.1s ease;
+            margin-bottom: 12px;
+        }
+
+        .social-link-btn.tiktok { background: #aaeaff; }
+        .social-link-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px #121212; }
+
+        .lang-btn {
+            background: #ffe68c;
+            border: 2.5px solid #121212;
+            border-radius: 16px;
+            padding: 14px 18px;
+            font-weight: 900;
+            font-size: 1.05rem;
+            color: #121212;
+            box-shadow: 4px 4px 0px #121212;
+            cursor: pointer;
+            transition: transform 0.1s ease;
+            margin-bottom: 12px;
+        }
+
+        .lang-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px #121212; }
+
+        .memories-container {
+            display: flex;
+            flex-direction: column;
+            gap: 15px;
+        }
+
+        .drive-link-btn {
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+            background: #ffe68c;
+            border: 3.5px solid #121212;
+            border-radius: 20px;
+            padding: 16px 20px;
+            font-size: 1.05rem;
+            font-weight: 900;
+            color: #121212;
+            text-decoration: none;
+            box-shadow: 4px 4px 0px #121212;
+            transition: transform 0.1s ease;
+        }
+
+        .drive-link-btn:hover { transform: translate(-2px, -2px); box-shadow: 6px 6px 0px #121212; }
+        .drive-link-btn.secondary { background: #aaeaff; }
+
+        /* Media Queries for Tablet and Mobile Devices */
+        @media (max-width: 850px) {
+            body {
+                justify-content: flex-start;
+                padding-top: 210px;
+                padding-bottom: 40px;
+            }
+            .grid-container {
+                grid-template-columns: 1fr;
+            }
+            .wrapper {
+                padding: 10px 20px;
+            }
+            .card {
+                padding: 35px 25px;
+                min-height: 220px;
+            }
+            .card-title {
+                font-size: 1.7rem;
+            }
+            .nav-logo-yd {
+                font-size: 4rem;
+            }
+            .top-navbar {
+                padding: 15px 20px;
+            }
+        }
+    </style>
+</head>
+<body>
+
+    <div class="top-navbar">
+        <button class="hamburger-btn" onclick="toggleDrawer()">
+            <span></span>
+            <span></span>
+            <span></span>
+        </button>
+        
+        <div class="header-center-box">
+            <span class="welcome-pill" id="txtWelcome">WELCOME TO</span>
+            <div class="nav-logo-yd">YD</div>
+            <p class="header-subtitle" id="txtHeaderSubtitle">A little meeting guide ✦ everything you need in one place</p>
+        </div>
+        
+        <div style="width: 32px;"></div>
+    </div>
+
+    <div class="side-drawer" id="sideDrawer">
+        <div class="drawer-close" onclick="toggleDrawer()">✕</div>
+        <div class="drawer-menu">
+            <div class="drawer-link" id="txtNavContact" onclick="openContactModal()">Contact Us</div>
+            <div class="drawer-link" id="txtNavPages" onclick="openPagesModal()">Our Pages</div>
+            <div class="drawer-link" id="txtNavLang" onclick="openLanguageModal()">🌐 Language / اللغة</div>
+        </div>
+    </div>
+
+    <div class="circle c1"></div>
+    <div class="circle c2"></div>
+    <div class="circle c3"></div>
+    <div class="circle c4"></div>
+    <div class="circle c5"></div>
+    <div class="circle c6"></div>
+    <div class="circle c7"></div>
+    <div class="circle c8"></div>
+    <div class="circle c9"></div>
+    <div class="circle c10"></div>
+
+    <div class="wrapper">
+        <div class="grid-container">
+            
+            <div class="card card-1" onclick="openStudiedModal()">
+                <span class="card-number">01</span>
+                <span class="card-icon">📚</span>
+                <div>
+                    <h2 class="card-title" id="txtCard1Title">What We Studied</h2>
+                    <p class="card-desc" id="txtCard1Desc">A quick recap of what we've already covered.</p>
+                </div>
+                <div class="card-action" id="txtCard1Action">→ CLICK TO EXPLORE</div>
+            </div>
+
+            <div class="card card-2" onclick="openMeetingModal()">
+                <span class="card-number">02</span>
+                <span class="card-icon">📅</span>
+                <div>
+                    <h2 class="card-title" id="txtCard2Title">Meeting Time</h2>
+                    <p class="card-desc" id="txtCard2Desc">Save the date and don't miss the meeting!</p>
+                </div>
+                <div class="card-action" id="txtCard2Action">→ CLICK TO SEE</div>
+            </div>
+
+            <div class="card card-3" onclick="openMemoriesModal()">
+                <span class="card-number">03</span>
+                <span class="card-icon">✨</span>
+                <div>
+                    <h2 class="card-title" id="txtCard3Title">Memories</h2>
+                    <p class="card-desc" id="txtCard3Desc">Photos & conference resources.</p>
+                </div>
+                <div class="card-action" id="txtCard3Action">→ CLICK TO REVEAL</div>
+            </div>
+
+            <div class="card card-4" onclick="openStudyingNowModal()">
+                <span class="card-number">04</span>
+                <span class="card-icon">🔥</span>
+                <div>
+                    <h2 class="card-title" id="txtCard4Title">What We're Studying Now</h2>
+                    <p class="card-desc" id="txtCard4Desc">See what we're currently learning.</p>
+                </div>
+                <div class="card-action" id="txtCard4Action">→ CLICK TO DISCOVER</div>
+            </div>
+
+        </div>
+    </div>
+
+    <div class="modal-overlay" id="modalOverlay">
+        <div class="modal-box">
+            <div class="modal-close-btn" onclick="closeModal()">✕</div>
+            <div class="modal-header-icon" id="modalIcon">📚</div>
+            <h3 class="modal-title" id="modalTitle">Title</h3>
+            <p class="modal-subtitle" id="modalSubtitle">Subtitle text</p>
+            <div id="modalBody"></div>
+        </div>
+    </div>
+
+    <script>
+        let currentLang = 'en';
+
+        const translations = {
+            en: {
+                welcome: 'WELCOME TO',
+                headerSubtitle: 'A little meeting guide ✦ everything you need in one place',
+                navContact: 'Contact Us',
+                navPages: 'Our Pages',
+                navLang: '🌐 Language / اللغة',
+                
+                card1Title: 'What We Studied',
+                card1Desc: "A quick recap of what we've already covered.",
+                card1Action: '→ CLICK TO EXPLORE',
+
+                card2Title: 'Meeting Time',
+                card2Desc: "Save the date and don't miss the meeting!",
+                card2Action: '→ CLICK TO SEE',
+
+                card3Title: 'Memories',
+                card3Desc: 'Photos & conference resources.',
+                card3Action: '→ CLICK TO REVEAL',
+
+                card4Title: "What We're Studying Now",
+                card4Desc: "See what we're currently learning.",
+                card4Action: '→ CLICK TO DISCOVER',
+
+                studiedSubtitle: "Here's a little recap of what we've already covered:",
+                meetingSubtitle: "Save the date and don't miss it!",
+                meetingTimeText: "Monday at 6pm ✦",
+                memoriesSubtitle: 'Check out our conference materials & photos!',
+                memoriesPdfBtn: '📄 Restart Conference (PDF) ✦',
+                memoriesMediaBtn: '📷 View Photos & Media ✦',
+                studyingNowSubtitle: 'See what we are currently learning',
+                studyingNowText: 'رسالة يعقوب ✦',
+                contactSubtitle: 'Reach out to us anytime!',
+                pagesSubtitle: 'Follow us on our social media platforms!',
+                langModalTitle: 'Choose Language / اختر اللغة',
+                langModalSubtitle: 'Select your preferred display language:'
+            },
+            ar: {
+                welcome: 'مرحباً بكم في',
+                headerSubtitle: 'دليل اجتماعنا الصغير ✦ كل ما تحتاجه في مكان واحد',
+                navContact: 'تواصل معنا',
+                navPages: 'صفحاتنا',
+                navLang: '🌐 Language / اللغة',
+
+                card1Title: 'ما تم دراسته',
+                card1Desc: 'ملخص سريع لما قمنا بدراسته سابقاً.',
+                card1Action: '← اضغط للاستكشاف',
+
+                card2Title: 'موعد الاجتماع',
+                card2Desc: 'احفظ الموعد ولا تفوّت الاجتماع!',
+                card2Action: '← اضغط للمشاهدة',
+
+                card3Title: 'ذكرياتنا',
+                card3Desc: 'صور ومؤتمرات ووسائط المجموعات.',
+                card3Action: '← اضغط للكشف',
+
+                card4Title: 'ما ندرسه الآن',
+                card4Desc: 'شاهد الموضوعات التي نكشف عنها حالياً.',
+                card4Action: '← اضغط للاكتشاف',
+
+                studiedSubtitle: 'ملخص سريع لما قمنا بدراسته سابقاً:',
+                meetingSubtitle: 'احفظ الموعد ولا تفوّت الاجتماع!',
+                meetingTimeText: 'الإثنين الساعة ٦ مساءً ✦',
+                memoriesSubtitle: 'شاهد مواد المؤتمرات والصور الخاصة بنا!',
+                memoriesPdfBtn: '📄 كتاب مؤتمر Restart (PDF) ✦',
+                memoriesMediaBtn: '📷 مشاهدة الصور والوسائط ✦',
+                studyingNowSubtitle: 'شاهد ما ندرسه حالياً',
+                studyingNowText: 'رسالة يعقوب ✦',
+                contactSubtitle: 'تواصل معنا في أي وقت!',
+                pagesSubtitle: 'تابعنا على منصات التواصل الاجتماعي!',
+                langModalTitle: 'اختر اللغة / Choose Language',
+                langModalSubtitle: 'حدد اللغة المفضلة للعرض:'
+            }
+        };
+
+        function setLanguage(lang) {
+            currentLang = lang;
+            const t = translations[lang];
+            const htmlTag = document.getElementById('htmlTag');
+
+            if (lang === 'ar') {
+                htmlTag.setAttribute('dir', 'rtl');
+                htmlTag.setAttribute('lang', 'ar');
+            } else {
+                htmlTag.removeAttribute('dir');
+                htmlTag.setAttribute('lang', 'en');
+            }
+
+            document.getElementById('txtWelcome').innerText = t.welcome;
+            document.getElementById('txtHeaderSubtitle').innerText = t.headerSubtitle;
+            document.getElementById('txtNavContact').innerText = t.navContact;
+            document.getElementById('txtNavPages').innerText = t.navPages;
+            document.getElementById('txtNavLang').innerText = t.navLang;
+
+            document.getElementById('txtCard1Title').innerText = t.card1Title;
+            document.getElementById('txtCard1Desc').innerText = t.card1Desc;
+            document.getElementById('txtCard1Action').innerText = t.card1Action;
+
+            document.getElementById('txtCard2Title').innerText = t.card2Title;
+            document.getElementById('txtCard2Desc').innerText = t.card2Desc;
+            document.getElementById('txtCard2Action').innerText = t.card2Action;
+
+            document.getElementById('txtCard3Title').innerText = t.card3Title;
+            document.getElementById('txtCard3Desc').innerText = t.card3Desc;
+            document.getElementById('txtCard3Action').innerText = t.card3Action;
+
+            document.getElementById('txtCard4Title').innerText = t.card4Title;
+            document.getElementById('txtCard4Desc').innerText = t.card4Desc;
+            document.getElementById('txtCard4Action').innerText = t.card4Action;
+
+            closeModal();
+        }
+
+        function toggleDrawer() {
+            document.getElementById('sideDrawer').classList.toggle('open');
+        }
+
+        function openStudiedModal() {
+            const t = translations[currentLang];
+            document.getElementById('modalTitle').innerText = t.card1Title;
+            document.getElementById('modalSubtitle').innerText = t.studiedSubtitle;
+            document.getElementById('modalIcon').innerText = '📚';
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="pill-item">القداسة ✦</div>
+                <div class="pill-item">عبرانيين ✦</div>
+            `;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function openMeetingModal() {
+            const t = translations[currentLang];
+            document.getElementById('modalTitle').innerText = t.card2Title;
+            document.getElementById('modalSubtitle').innerText = t.meetingSubtitle;
+            document.getElementById('modalIcon').innerText = '📅';
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="pill-item">${t.meetingTimeText}</div>
+            `;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function openStudyingNowModal() {
+            const t = translations[currentLang];
+            document.getElementById('modalTitle').innerText = t.card4Title;
+            document.getElementById('modalSubtitle').innerText = t.studyingNowSubtitle;
+            document.getElementById('modalIcon').innerText = '🔥';
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="pill-item">${t.studyingNowText}</div>
+            `;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function openMemoriesModal() {
+            const t = translations[currentLang];
+            document.getElementById('modalTitle').innerText = t.card3Title;
+            document.getElementById('modalSubtitle').innerText = t.memoriesSubtitle;
+            document.getElementById('modalIcon').innerText = '✨';
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="memories-container">
+                    <a href="https://drive.google.com/drive/folders/1N9yQWFC5yjyKT0gDxGxzvgZUubaTpj3M?usp=sharing" target="_blank" class="drive-link-btn">
+                        ${t.memoriesPdfBtn}
+                    </a>
+                    <a href="https://drive.google.com/drive/folders/1N9yQWFC5yjyKT0gDxGxzvgZUubaTpj3M?usp=sharing" target="_blank" class="drive-link-btn secondary">
+                        ${t.memoriesMediaBtn}
+                    </a>
+                </div>
+            `;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function openContactModal() {
+            toggleDrawer();
+            const t = translations[currentLang];
+            document.getElementById('modalTitle').innerText = t.navContact;
+            document.getElementById('modalSubtitle').innerText = t.contactSubtitle;
+            document.getElementById('modalIcon').innerText = '📞';
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="pill-item">📞 01022739415</div>
+            `;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function openPagesModal() {
+            toggleDrawer();
+            const t = translations[currentLang];
+            document.getElementById('modalTitle').innerText = t.navPages;
+            document.getElementById('modalSubtitle').innerText = t.pagesSubtitle;
+            document.getElementById('modalIcon').innerText = '🌐';
+            
+            document.getElementById('modalBody').innerHTML = `
+                <a href="https://www.instagram.com/yd39073?utm_source=qr&igsi=YnBtcXhuYnExMGtp" target="_blank" class="social-link-btn">
+                    📸 Instagram
+                </a>
+                <a href="https://www.tiktok.com/@insideyd?_r=1&_t=ZS-99SNTeCuqV0" target="_blank" class="social-link-btn tiktok">
+                    🎵 TikTok
+                </a>
+            `;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function openLanguageModal() {
+            toggleDrawer();
+            const t = translations[currentLang];
+            document.getElementById('modalTitle').innerText = t.langModalTitle;
+            document.getElementById('modalSubtitle').innerText = t.langModalSubtitle;
+            document.getElementById('modalIcon').innerText = '🌐';
+            
+            document.getElementById('modalBody').innerHTML = `
+                <div class="lang-btn" onclick="setLanguage('en')">English</div>
+                <div class="lang-btn" onclick="setLanguage('ar')">العربية</div>
+            `;
+            document.getElementById('modalOverlay').style.display = 'flex';
+        }
+
+        function closeModal() {
+            document.getElementById('modalOverlay').style.display = 'none';
+        }
+    </script>
+</body>
+</html>
