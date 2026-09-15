@@ -197,7 +197,6 @@
         .c4 { width: 130px; height: 130px; background: #c2b5ff; bottom: 8%; right: 3%; opacity: 0.75; animation-delay: -4.5s; }
         .c5 { width: 140px; height: 140px; background: #ff9e7e; top: 58%; left: 47%; opacity: 0.55; animation-delay: -2s; }
         
-        /* كرات إضافية لحيوية أكتَر */
         .c6 { width: 90px; height: 90px; background: #85ffc7; top: 28%; left: 22%; opacity: 0.6; animation-delay: -3.5s; }
         .c7 { width: 120px; height: 120px; background: #ff92d0; top: 25%; right: 22%; opacity: 0.65; animation-delay: -1s; }
         .c8 { width: 100px; height: 100px; background: #ffd166; bottom: 25%; left: 15%; opacity: 0.7; animation-delay: -5s; }
@@ -431,6 +430,7 @@
 </head>
 <body>
 
+    <!-- Fixed Top Dashboard Bar -->
     <div class="top-navbar">
         <button class="hamburger-btn" onclick="toggleDrawer()">
             <span></span>
@@ -447,15 +447,18 @@
         <div style="width: 32px;"></div>
     </div>
 
+    <!-- Side Menu Drawer -->
     <div class="side-drawer" id="sideDrawer">
         <div class="drawer-close" onclick="toggleDrawer()">✕</div>
         <div class="drawer-menu">
+            <a href="https://maps.app.goo.gl/JYF3fJM4na2onFXQA?g_st=ic" target="_blank" class="drawer-link" id="txtNavLocation">📍 Our Location</a>
             <div class="drawer-link" id="txtNavContact" onclick="openContactModal()">Contact Us</div>
             <div class="drawer-link" id="txtNavPages" onclick="openPagesModal()">Our Pages</div>
             <div class="drawer-link" id="txtNavLang" onclick="openLanguageModal()">🌐 Language / اللغة</div>
         </div>
     </div>
 
+    <!-- Floating Background Blobs -->
     <div class="circle c1"></div>
     <div class="circle c2"></div>
     <div class="circle c3"></div>
@@ -513,6 +516,7 @@
         </div>
     </div>
 
+    <!-- Custom Modal -->
     <div class="modal-overlay" id="modalOverlay">
         <div class="modal-box">
             <div class="modal-close-btn" onclick="closeModal()">✕</div>
@@ -530,6 +534,7 @@
             en: {
                 welcome: 'WELCOME TO',
                 headerSubtitle: 'A little meeting guide ✦ everything you need in one place',
+                navLocation: '📍 Our Location',
                 navContact: 'Contact Us',
                 navPages: 'Our Pages',
                 navLang: '🌐 Language / اللغة',
@@ -554,7 +559,7 @@
                 meetingSubtitle: "Save the date and don't miss it!",
                 meetingTimeText: "Monday at 6pm ✦",
                 memoriesSubtitle: 'Check out our conference materials & photos!',
-                memoriesPdfBtn: '📄 Restart Conference (PDF) ✦',
+                memoriesPdfBtn: '📄 Our PDFs ✦',
                 memoriesMediaBtn: '📷 View Photos & Media ✦',
                 studyingNowSubtitle: 'See what we are currently learning',
                 studyingNowText: 'رسالة يعقوب ✦',
@@ -566,6 +571,7 @@
             ar: {
                 welcome: 'مرحباً بكم في',
                 headerSubtitle: 'دليل اجتماعنا الصغير ✦ كل ما تحتاجه في مكان واحد',
+                navLocation: '📍 موقعنا على الخريطة',
                 navContact: 'تواصل معنا',
                 navPages: 'صفحاتنا',
                 navLang: '🌐 Language / اللغة',
@@ -590,7 +596,7 @@
                 meetingSubtitle: 'احفظ الموعد ولا تفوّت الاجتماع!',
                 meetingTimeText: 'الإثنين الساعة ٦ مساءً ✦',
                 memoriesSubtitle: 'شاهد مواد المؤتمرات والصور الخاصة بنا!',
-                memoriesPdfBtn: '📄 كتاب مؤتمر Restart (PDF) ✦',
+                memoriesPdfBtn: '📄 Our PDFs ✦',
                 memoriesMediaBtn: '📷 مشاهدة الصور والوسائط ✦',
                 studyingNowSubtitle: 'شاهد ما ندرسه حالياً',
                 studyingNowText: 'رسالة يعقوب ✦',
@@ -616,6 +622,7 @@
 
             document.getElementById('txtWelcome').innerText = t.welcome;
             document.getElementById('txtHeaderSubtitle').innerText = t.headerSubtitle;
+            document.getElementById('txtNavLocation').innerText = t.navLocation;
             document.getElementById('txtNavContact').innerText = t.navContact;
             document.getElementById('txtNavPages').innerText = t.navPages;
             document.getElementById('txtNavLang').innerText = t.navLang;
